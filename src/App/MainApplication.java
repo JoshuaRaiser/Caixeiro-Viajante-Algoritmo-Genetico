@@ -21,7 +21,7 @@ public class MainApplication extends JFrame {
 
     String[] cidades_c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     
-    String caminhoArquivo;
+    //String caminhoArquivo;
     String conteudoArquivo;
     
     int numeroPopulacoes;
@@ -46,6 +46,8 @@ public class MainApplication extends JFrame {
 
     public void carregaGrafo()
     {        
+        drawer1.deleteNodes(); // LINDO ISSO AQUI QUE EU FIZ, PQP! Q COISA LINDA
+        
         String entradas[] = conteudoArquivo.split(Pattern.quote(";"));
         numeroCidades = (int) Math.sqrt(entradas.length);
         
@@ -74,9 +76,8 @@ public class MainApplication extends JFrame {
                 drawer1.addEdge(i, j);
             }
         }
-        
-        drawer1.setEdgeColor(Color.RED);
-        drawer1.addEdge(0, 1);
+                
+        drawer1.setEdgeColor(Color.BLACK);
         
         //algoritmoGenetico = new AlgoritmoGenetico(mapa, configuracoes);
         
@@ -194,16 +195,13 @@ public class MainApplication extends JFrame {
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
         // TODO add your handling code here:
         JFileChooser abrir = new JFileChooser();
+        String caminhoArquivo = "";
         int retorno = abrir.showOpenDialog(null);
         if (retorno == JFileChooser.APPROVE_OPTION) {
-            caminhoArquivo = abrir.getSelectedFile().getAbsolutePath();
+            caminhoArquivo += abrir.getSelectedFile().getAbsolutePath();
         }
 
-        drawer1.repaint();
-        this.repaint();
         ler(caminhoArquivo);
-        
-        
     }//GEN-LAST:event_jMenu1MouseClicked
 
     private void ler(String caminho) {
@@ -230,10 +228,11 @@ public class MainApplication extends JFrame {
             //liberamos o fluxo dos objetos ou fechamos o arquivo
             fileReader.close();
             bufferedReader.close();
-            jTextArea1.setText("Carregando...\n\n"+linhas);
+            jTextArea1.append("\nCarregando...\n\n"+linhas);
+            conteudoArquivo = "";
             conteudoArquivo = linhas;
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("erro aqui   \n"+ e.getMessage());
         }
         
         carregaGrafo();

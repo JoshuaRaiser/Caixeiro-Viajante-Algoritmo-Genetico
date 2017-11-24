@@ -56,6 +56,14 @@ public class Drawer extends JPanel {
         edges.add(new edge(i, j));
         this.repaint();
     }
+    
+    public void deleteNodes()
+    {
+        nodes.clear();
+        edges.clear();
+        this.repaint();
+    }
+    
 
     @Override
     public void paintComponent(Graphics g){ // draw the nodes and edges
