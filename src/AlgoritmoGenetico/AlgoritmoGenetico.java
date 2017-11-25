@@ -1,6 +1,7 @@
 package AlgoritmoGenetico;
 
 import Model.Mapa;
+import Model.Resultado;
 import java.util.Random;
 
 /**
@@ -38,12 +39,13 @@ public class AlgoritmoGenetico {
         this.mapa = mapa.getMapa();
     }
 
-    public void executar() {
+    public Resultado executar() {
+        String log = "";
         gerarCromossomosAleatoriamente(cromossomos);
         calcularResultado(cromossomos, resultados, mapa);
         ordenar(cromossomos, resultados);
         if (mostrarEvolucao) {
-            imprimir(cromossomos, resultados, cidades);
+            log += imprimir(cromossomos, resultados, cidades);
         }
 
         int i;
@@ -52,24 +54,27 @@ public class AlgoritmoGenetico {
             calcularResultado(cromossomos, resultados, mapa);
             ordenar(cromossomos, resultados);
             if (mostrarEvolucao) {
-                System.out.println("Geração: " + (i + 1));
-                imprimir(cromossomos, resultados, cidades);
+                log += "Geração: " + (i + 1) + "\n";
+                log += imprimir(cromossomos, resultados, cidades);
             }
         }
         // mostrando resultado encontrado
-        System.out.println("\nMelhor encontrado:");
-        resultado(cromossomos, resultados, cidades);
+        log += "\nMelhor encontrado:\n";
+        log += resultado(cromossomos, resultados, cidades);
+        return new Resultado(log, cromossomos, resultados, cidades);
     }
 
-    private void resultado(int[][] cromossomos, int[] resultados, String[] cidades) {
+    private String resultado(int[][] cromossomos, int[] resultados, String[] cidades) {
+        String retorno = "";
         int i, i2;
         i = 0;
         for (i2 = 0; i2 < NUMERO_CIDADES; i2++) {
-            System.out.print(cidades[cromossomos[i][i2]] + " => ");
+            //System.out.println(i +" - "+ i2);
+            retorno += cidades[cromossomos[i][i2]] + " => ";
         }
-        System.out.print(cidades[cromossomos[i][0]] + " ");
-        System.out.println(" Resultado: " + resultados[i]);
-
+        retorno += cidades[cromossomos[i][0]] + " ";
+        retorno += " Resultado: " + resultados[i] + "\n";
+        return retorno;
     }
 
     public void renovarCromossomos(int[][] cromossomos, int[] resultados, float taxaMortalidade) {
@@ -210,15 +215,17 @@ public class AlgoritmoGenetico {
         return crom_valido;
     }
 
-    private void imprimir(int[][] cromossomos, int[] resultados, String[] cidades) {
+    private String imprimir(int[][] cromossomos, int[] resultados, String[] cidades) {
+        String retorno = "";
         int i, i2;
         for (i = 0; i < NUMERO_POPULACAO; i++) {
             for (i2 = 0; i2 < NUMERO_CIDADES; i2++) {
-                System.out.print(cidades[cromossomos[i][i2]] + " => ");
+                retorno += cidades[cromossomos[i][i2]] + " => ";
             }
-            System.out.print(cidades[cromossomos[i][0]] + " ");
-            System.out.println(" Resultados: " + resultados[i]);
+            retorno += cidades[cromossomos[i][0]] + " ";
+            retorno += " Resultados: " + resultados[i] + "\n";
         }
+        return retorno;
     }
 
     private void calcularResultado(int[][] cromossomos, int[] resultados, int[][] mapa) {

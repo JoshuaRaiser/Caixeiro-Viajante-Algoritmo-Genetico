@@ -2,13 +2,22 @@ package App;
 
 import AlgoritmoGenetico.Configuracao;
 import AlgoritmoGenetico.AlgoritmoGenetico;
+import DrawGraph.Edge;
+import DrawGraph.Node;
 import Model.Mapa;
+import Model.Resultado;
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Pattern;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
@@ -19,80 +28,90 @@ import javax.swing.JFrame;
 public class MainApplication extends JFrame {
 
     String[] cidades_c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-    
+
     //String caminhoArquivo;
     String conteudoArquivo;
-    
+
     int numeroPopulacoes;
     int numeroCidades;
     int numeroGeracoes;
-    
+
     float taxaMutacao;
-    
+
     boolean mostrarGeracoes;
-    
+
     AlgoritmoGenetico algoritmoGenetico;
     Configuracao configuracoes;
     Mapa mapa;
-    
+
     public MainApplication() {
         initComponents();
+                
         jMenu2.setEnabled(false);
-        drawer1.setVisible(true);
+        jMenuItem2.setEnabled(false);
+        jMenu3.setEnabled(false);
         
+        drawer1.setVisible(true);
         // seta configurações básicas iniciais
         mostrarGeracoes = true;
         taxaMutacao = (float) 0.5; // 0.5%
         numeroGeracoes = 3000;
         numeroPopulacoes = 10;
-        
+
     }
 
-    public void carregaGrafo()
-    {        
-        drawer1.deleteNodes(); // LINDO ISSO AQUI QUE EU FIZ, PQP! Q COISA LINDA
+    public void carregaGrafo() {
+        drawer1.deleteNodes();
         
         String entradas[] = conteudoArquivo.split(Pattern.quote(";"));
         numeroCidades = (int) Math.sqrt(entradas.length);
-        
+
         int[][] cidades = new int[numeroCidades][numeroCidades];
         int c_atual = 0;
-        
+
         // obtém as cidades
-        for(int i = 0; i < numeroCidades; i++){
-            for(int j = 0; j < numeroCidades; j++){
+        for (int i = 0; i < numeroCidades; i++) {
+            for (int j = 0; j < numeroCidades; j++) {
                 cidades[i][j] = Integer.parseInt(entradas[c_atual]);
                 c_atual++;
             }
         }
         mapa = new Mapa(cidades);
-        
-        // faz o mapeamento das cidades para gerar o grafo
+
+        // faz o mapeamento das cidades para gerar o grafo 
         for (int i = 0; i < numeroCidades; i++) {
-            int x = new Random().nextInt(1000);
-            int y = new Random().nextInt(500);
-            drawer1.addNode((String)cidades_c[i], x, y);
+            int x, y;
+            
+            x = new Random().nextInt(drawer1.getBounds().width);
+            y = new Random().nextInt(drawer1.getBounds().height);
+            
+            while((x <= 100 && y <= 100) ||  (x >= drawer1.getBounds().width-100 && y >= drawer1.getBounds().height-100))
+            {
+                x = new Random().nextInt(drawer1.getBounds().width);
+                y = new Random().nextInt(drawer1.getBounds().height);
+            }      
+            drawer1.addNode((String) cidades_c[i], x, y);
         }
-          
+
         // faz as ligações entre as cidades
-        for(int i = 0; i < numeroCidades; i++){
-            for(int j = i + 1; j < numeroCidades; j++){
+        for (int i = 0; i < numeroCidades; i++) {
+            for (int j = i + 1; j < numeroCidades; j++) {
                 drawer1.addEdge(i, j);
             }
         }
-                
-        drawer1.setEdgeColor(Color.BLACK);
+
+        //System.out.println(nodes.size() + " - " + edges.size());
         
         // atribui as configurações iniciais e as obtidoas com o mapa para montar as configurações do algoritmo genético
         configuracoes = new Configuracao(mostrarGeracoes, taxaMutacao, numeroGeracoes, numeroCidades, numeroPopulacoes);
-        
+
         algoritmoGenetico = new AlgoritmoGenetico(mapa, configuracoes);
-        
+
         jMenu2.setEnabled(true);
-        
+        jMenuItem2.setEnabled(true);
         this.repaint();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,10 +127,13 @@ public class MainApplication extends JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PCV-AG graph");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -123,7 +145,7 @@ public class MainApplication extends JFrame {
         drawer1.setLayout(drawer1Layout);
         drawer1Layout.setHorizontalGroup(
             drawer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1178, Short.MAX_VALUE)
         );
         drawer1Layout.setVerticalGroup(
             drawer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,8 +170,8 @@ public class MainApplication extends JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1180, Short.MAX_VALUE)
-                    .addComponent(drawer1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(drawer1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -173,6 +195,23 @@ public class MainApplication extends JFrame {
                 jMenu1ActionPerformed(evt);
             }
         });
+
+        jMenuItem1.setText("Importar Arquivo");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Randomizar Grafo");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Iniciar");
@@ -208,6 +247,60 @@ public class MainApplication extends JFrame {
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
         // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+        // saída no console
+        jTextArea1.append("Processando algoritmo genético...\n\n");
+        Resultado res = algoritmoGenetico.executar();
+        jTextArea1.append("\n\n" + res.getLog());    
+        
+        // em [0][i] contém as ligações (edges)
+        int[][] cromossomo = res.getCromossomo();
+        
+        ArrayList<Node> nodes = new ArrayList<>();
+        
+        // salva os nodes antes de deletá-los
+        for(Node node : drawer1.getNodes())
+        {
+            nodes.add(node);
+        }
+        drawer1.deleteNodes();
+        
+        // repinta os nodes
+        for(int i = 0; i < nodes.size(); i++)
+        {
+            /*if (i == 0)
+            {
+                drawer1.addNode(nodes.get(i).getName(), nodes.get(i).getX(), nodes.get(i).getY(), true);
+            }*/
+            drawer1.addNode(nodes.get(i).getName(), nodes.get(i).getX(), nodes.get(i).getY());
+            
+        }
+        // faz as ligações entre as cidades resultado
+        
+        for (int i = 0; i < numeroCidades; i++) {
+            
+            for(int j = 0; j < numeroCidades; j++)
+            {
+                System.out.print(cromossomo[i][j]+"\t");
+            }
+            System.out.println("");
+        }
+        
+        // faz as ligações entre as cidades
+        for (int i = 0; i < numeroCidades; i++) {
+            for (int j = i + 1; j < numeroCidades; j++) {
+                drawer1.addEdge(j, i, Color.RED);
+            }
+        }
+
+        this.repaint();
+        
+    }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
         JFileChooser abrir = new JFileChooser();
         String caminhoArquivo = "";
         int retorno = abrir.showOpenDialog(null);
@@ -216,14 +309,12 @@ public class MainApplication extends JFrame {
         }
 
         ler(caminhoArquivo);
-    }//GEN-LAST:event_jMenu1MouseClicked
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
-        // saída no console
-        algoritmoGenetico.executar();
-        
-        //TODO: exibir passo a passo ou a melhor solução encontrada, alterando a cor das edges
-    }//GEN-LAST:event_jMenu2MouseClicked
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        carregaGrafo();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void ler(String caminho) {
         try {
@@ -249,13 +340,13 @@ public class MainApplication extends JFrame {
             //liberamos o fluxo dos objetos ou fechamos o arquivo
             fileReader.close();
             bufferedReader.close();
-            jTextArea1.append("\nCarregando...\n\n"+linhas);
+            jTextArea1.append("\nCarregando...\n\n" + linhas);
             conteudoArquivo = "";
             conteudoArquivo = linhas;
         } catch (IOException e) {
-            System.out.println("erro aqui   \n"+ e.getMessage());
+            //System.out.println("erro aqui   \n" + e.getMessage());
         }
-        
+
         carregaGrafo();
     }
 
@@ -300,6 +391,8 @@ public class MainApplication extends JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;

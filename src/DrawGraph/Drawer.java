@@ -14,39 +14,15 @@ public class Drawer extends JPanel {
 
     int width;
     int height;
-    Color edgeColor;
 
     ArrayList<Node> nodes;
-    ArrayList<edge> edges;
+    ArrayList<Edge> edges;
 
     public Drawer() {
         nodes = new ArrayList<>();
         edges = new ArrayList<>();
         width = 30;
         height = 30;
-        edgeColor = Color.BLACK;
-    }
-
-    private class Node {
-
-        int x, y;
-        String name;
-
-        public Node(String myName, int myX, int myY) {
-            x = myX;
-            y = myY;
-            name = myName;
-        }
-    }
-
-    private class edge {
-
-        int i, j;
-
-        public edge(int ii, int jj) {
-            i = ii;
-            j = jj;
-        }
     }
 
     public void addNode(String name, int x, int y) {
@@ -54,51 +30,58 @@ public class Drawer extends JPanel {
         nodes.add(new Node(name, x, y));
         this.repaint();
     }
+    
+    public void addEdge(int i, int j, Color color) {
+        // adiciona uma linha entre os nodos i e j
+        edges.add(new Edge(i, j, color));
+        this.repaint();
+    }
 
     public void addEdge(int i, int j) {
         // adiciona uma linha entre os nodos i e j
-        edges.add(new edge(i, j));
+        edges.add(new Edge(i, j));
         this.repaint();
     }
-    
-    public void deleteNodes()
-    {
+
+    public void deleteNodes() {
         nodes.clear();
         edges.clear();
         this.repaint();
     }
-    
+
+    public ArrayList<Node> getNodes() {
+        return nodes;
+    }
+
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
 
     @Override
-    public void paintComponent(Graphics g){ // desenha os nodos e as linhas
-        
+    public void paintComponent(Graphics g) { // desenha os nodos e as linhas
+
         super.paintComponent(g);
-        
+
         FontMetrics f = g.getFontMetrics();
         int nodeHeight = Math.max(height, f.getHeight());
 
-        g.setColor(edgeColor);
-        for (edge e : edges) {
+        for (Edge e : edges) {
+            g.setColor(e.color);
             g.drawLine(nodes.get(e.i).x, nodes.get(e.i).y, nodes.get(e.j).x, nodes.get(e.j).y);
         }
 
         for (Node n : nodes) {
             int nodeWidth = Math.max(width, f.stringWidth(n.name) + width / 2);
-            g.setColor(Color.white);
+            g.setColor(Color.WHITE);
+            if (n.init) {
+                g.setColor(Color.RED);
+            }
             g.fillOval(n.x - nodeWidth / 2, n.y - nodeHeight / 2, nodeWidth, nodeHeight);
-            g.setColor(Color.black);
+            g.setColor(Color.BLACK);
             g.drawOval(n.x - nodeWidth / 2, n.y - nodeHeight / 2, nodeWidth, nodeHeight);
 
             g.drawString(n.name, n.x - f.stringWidth(n.name) / 2, n.y + f.getHeight() / 2);
         }
     }
-    
-    public Color getEdgeColor() {
-        return edgeColor;
-    }
 
-    public void setEdgeColor(Color edgeColor) {
-        this.edgeColor = edgeColor;
-    }
-        
 }
