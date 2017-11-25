@@ -1,9 +1,12 @@
 package AlgoritmoGenetico;
 
-import AlgoritmoGenetico.Configuracao;
 import Model.Mapa;
 import java.util.Random;
 
+/**
+ *
+ * @author Joshua Raiser
+ */
 public class AlgoritmoGenetico {
 
     String[] cidades = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
@@ -69,12 +72,11 @@ public class AlgoritmoGenetico {
 
     }
 
-    public void renovarCromossomos(int[][] cromossomos,
-            int[] resultados, float taxaMortalidade) {
+    public void renovarCromossomos(int[][] cromossomos, int[] resultados, float taxaMortalidade) {
 
         int inicioExcluidos = (int) (taxaMortalidade * 10);
 
-        int i, i2 = 0;
+        int i, i2;
 
         for (i = inicioExcluidos; i < 10; i++) {
 
@@ -208,8 +210,7 @@ public class AlgoritmoGenetico {
         return crom_valido;
     }
 
-    private void imprimir(int[][] cromossomos, int[] resultados,
-            String[] cidades) {
+    private void imprimir(int[][] cromossomos, int[] resultados, String[] cidades) {
         int i, i2;
         for (i = 0; i < NUMERO_POPULACAO; i++) {
             for (i2 = 0; i2 < NUMERO_CIDADES; i2++) {

@@ -2,7 +2,6 @@ package App;
 
 import AlgoritmoGenetico.Configuracao;
 import AlgoritmoGenetico.AlgoritmoGenetico;
-import DrawGraph.Drawer;
 import Model.Mapa;
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -38,9 +37,14 @@ public class MainApplication extends JFrame {
     
     public MainApplication() {
         initComponents();
+        jMenu2.setEnabled(false);
         drawer1.setVisible(true);
         
-        //Configuracao configuracoes = new Configuracao(mostrarGeracoes, taxaMutacao, numeroGeracoes, numeroCidades, numeroPopulacoes);
+        // seta configurações básicas iniciais
+        mostrarGeracoes = true;
+        taxaMutacao = (float) 0.5; // 0.5%
+        numeroGeracoes = 3000;
+        numeroPopulacoes = 10;
         
     }
 
@@ -79,7 +83,12 @@ public class MainApplication extends JFrame {
                 
         drawer1.setEdgeColor(Color.BLACK);
         
-        //algoritmoGenetico = new AlgoritmoGenetico(mapa, configuracoes);
+        // atribui as configurações iniciais e as obtidoas com o mapa para montar as configurações do algoritmo genético
+        configuracoes = new Configuracao(mostrarGeracoes, taxaMutacao, numeroGeracoes, numeroCidades, numeroPopulacoes);
+        
+        algoritmoGenetico = new AlgoritmoGenetico(mapa, configuracoes);
+        
+        jMenu2.setEnabled(true);
         
         this.repaint();
     }
@@ -167,6 +176,11 @@ public class MainApplication extends JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Iniciar");
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu2MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Configurações");
@@ -203,6 +217,13 @@ public class MainApplication extends JFrame {
 
         ler(caminhoArquivo);
     }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+        // saída no console
+        algoritmoGenetico.executar();
+        
+        //TODO: exibir passo a passo ou a melhor solução encontrada, alterando a cor das edges
+    }//GEN-LAST:event_jMenu2MouseClicked
 
     private void ler(String caminho) {
         try {

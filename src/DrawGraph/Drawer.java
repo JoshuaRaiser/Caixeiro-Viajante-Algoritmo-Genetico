@@ -6,6 +6,10 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
+/**
+ *
+ * @author Joshua Raiser
+ */
 public class Drawer extends JPanel {
 
     int width;
@@ -15,9 +19,9 @@ public class Drawer extends JPanel {
     ArrayList<Node> nodes;
     ArrayList<edge> edges;
 
-    public Drawer() { //Constructor
-        nodes = new ArrayList<Node>();
-        edges = new ArrayList<edge>();
+    public Drawer() {
+        nodes = new ArrayList<>();
+        edges = new ArrayList<>();
         width = 30;
         height = 30;
         edgeColor = Color.BLACK;
@@ -46,13 +50,13 @@ public class Drawer extends JPanel {
     }
 
     public void addNode(String name, int x, int y) {
-        //add a node at pixel (x,y)
+        // adiciona um nodo ao pixel de cordenada (x,y)
         nodes.add(new Node(name, x, y));
         this.repaint();
     }
 
     public void addEdge(int i, int j) {
-        //add an edge between nodes i and j
+        // adiciona uma linha entre os nodos i e j
         edges.add(new edge(i, j));
         this.repaint();
     }
@@ -66,7 +70,7 @@ public class Drawer extends JPanel {
     
 
     @Override
-    public void paintComponent(Graphics g){ // draw the nodes and edges
+    public void paintComponent(Graphics g){ // desenha os nodos e as linhas
         
         super.paintComponent(g);
         
