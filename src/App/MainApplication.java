@@ -167,7 +167,7 @@ public void carregaGrafo() {
         jTextArea1.setForeground(new java.awt.Color(0, 255, 0));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
-        jTextArea1.setText("Para começar, importe o arquivo com a matriz de adjacência (valores devem ser separados por ponto e vírgula). Exemplo: \n0;1;4;5;\n1;0;6;2;\n4;6;0;8;\n5;2;8;0\nE então, pressione iniciar no canto superior esquerdo.");
+        jTextArea1.setText("Para começar, importe o arquivo com a matriz de adjacência (valores devem ser separados por ponto e vírgula). Exemplo: \n0;1;4;5;\n1;0;6;2;\n4;6;0;8;\n5;2;8;0\nE então, pressione iniciar.");
         jTextArea1.setCaretColor(new java.awt.Color(51, 204, 0));
         jScrollPane1.setViewportView(jTextArea1);
 

@@ -185,7 +185,7 @@
                 </Property>
                 <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="Para come&#xe7;ar, importe o arquivo com a matriz de adjac&#xea;ncia (valores devem ser separados por ponto e v&#xed;rgula). Exemplo: &#xa;0;1;4;5;&#xa;1;0;6;2;&#xa;4;6;0;8;&#xa;5;2;8;0&#xa;E ent&#xe3;o, pressione iniciar no canto superior esquerdo."/>
+                <Property name="text" type="java.lang.String" value="Para come&#xe7;ar, importe o arquivo com a matriz de adjac&#xea;ncia (valores devem ser separados por ponto e v&#xed;rgula). Exemplo: &#xa;0;1;4;5;&#xa;1;0;6;2;&#xa;4;6;0;8;&#xa;5;2;8;0&#xa;E ent&#xe3;o, pressione iniciar."/>
                 <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="cc" red="33" type="rgb"/>
                 </Property>
