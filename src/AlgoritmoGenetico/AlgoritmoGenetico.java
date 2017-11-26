@@ -54,7 +54,7 @@ public class AlgoritmoGenetico {
             calcularResultado(cromossomos, resultados, mapa);
             ordenar(cromossomos, resultados);
             if (mostrarEvolucao) {
-                log += "Geração: " + (i + 1) + "\n";
+                log += "\nGeração: " + (i + 1) + "\n";
                 log += imprimir(cromossomos, resultados, cidades);
             }
         }
@@ -223,7 +223,7 @@ public class AlgoritmoGenetico {
                 retorno += cidades[cromossomos[i][i2]] + " => ";
             }
             retorno += cidades[cromossomos[i][0]] + " ";
-            retorno += " Resultados: " + resultados[i] + "\n";
+            retorno += " Resultado: " + resultados[i] + "\n";
         }
         return retorno;
     }

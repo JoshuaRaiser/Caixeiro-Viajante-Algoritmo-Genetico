@@ -1,0 +1,18 @@
+int tam = 20;
+int[][] m = new int[tam][tam];
+        for (int i = 0; i < tam; i++) {
+            for (int k = i + 1; k < tam; k++) {
+                m[i][k] = (int) (Math.random() * 10) + (int) (Math.random() * 10);
+            }
+        }
+        for (int i = 0; i < tam; i++) {
+            for (int k = i + 1; k < tam; k++) {
+                m[k][i] = m[i][k];
+            }
+        }
+        for (int i = 0; i < tam; i++) {
+            for (int k = 0; k < tam; k++) {
+                System.out.print(m[i][k]+ ";");
+            }
+            System.out.println("");
+        }
