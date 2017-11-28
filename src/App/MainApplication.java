@@ -34,6 +34,7 @@ public class MainApplication extends JFrame {
     String[] cidades_c = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
     //String caminhoArquivo;
+    String caminhoArquivo;
     String conteudoArquivo;
     String log;
 
@@ -52,6 +53,7 @@ public class MainApplication extends JFrame {
     public MainApplication() {
         initComponents();
 
+        caminhoArquivo = "";
         log = "";
 
         jMenu2.setEnabled(false);
@@ -478,10 +480,17 @@ public void carregaGrafo() {
     }//GEN-LAST:event_jMenuItem1MouseClicked
     
     private void ler(String caminho) {
+        boolean novoArquivo = false;
         try {
             //Indicamos o arquivo que será lido
             FileReader fileReader = new FileReader(caminho);
                         
+            if(caminhoArquivo == "" || !caminho.equals(caminhoArquivo))
+            {
+                caminhoArquivo = caminho;
+                novoArquivo = true;
+            }
+            
             //Criamos o objeto bufferReader que nos
             // oferece o método de leitura readLine()
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -510,7 +519,10 @@ public void carregaGrafo() {
         }
 
         jButton1.setEnabled(false);
-        carregaGrafo();
+        if(novoArquivo)
+        {
+            carregaGrafo();
+        }
     }
 
     /**
